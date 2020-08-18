@@ -99,29 +99,29 @@ public class IosPlatform implements Platform {
     public boolean executeTestAction(TestAction action) {
         switch (action.getKeyword()) {
             case GOTO:
-                driver.get(action.getSecondParam().orElseThrow(IllegalArgumentException::new));
+                driver.get(action.getParams().get(0));
                 break;
             case SET_TEXT:
-                driver.getKeyboard().sendKeys(action.getSecondParam().orElseThrow(IllegalArgumentException::new));
+                driver.getKeyboard().sendKeys(action.getParams().get(0));
                 break;
             case CLICK:
-                WebElement e = getElementByName(action.getFirstParam().orElseThrow(IllegalArgumentException::new));
+                WebElement e = getElementByName(action.getParams().get(0));
                 e.click();
                 break;
             case CHECK_ELEMENT:
             case SCROLL_TO:
                 break;
             case WAIT_FOR:
-                String objectName = action.getFirstParam().orElseThrow(IllegalArgumentException::new);
+                String objectName = action.getParams().get(0);
                 new WebDriverWait(driver, 30).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
                 break;
             case VERIFY_EITHER:
                 int waitDurationInMillis = (Integer) driver.getCapabilities().getCapability("maxDuration");
                 try {
-                    objectName = action.getFirstParam().orElseThrow(IllegalArgumentException::new);
+                    objectName = action.getParams().get(0);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
                 } catch (Exception exception) {
-                    objectName = action.getSecondParam().orElseThrow(IllegalArgumentException::new);
+                    objectName = action.getParams().get(1);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
                 }
                 break;

@@ -8,7 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 public class XlsDataSource implements TestCaseDataSource {
@@ -31,7 +31,8 @@ public class XlsDataSource implements TestCaseDataSource {
                 line = reader.readLine();
                 while (line != null && line.contains(",")) {
                     String[] columns = line.split(",");
-                    actions.add(new TestAction(Keyword.valueOf(columns[0]), columns[1], columns[2]));
+                    List<String> params = new ArrayList<>(Arrays.asList(columns).subList(1, columns.length));
+                    actions.add(new TestAction(Keyword.valueOf(columns[0]), params));
                     line = reader.readLine();
                 }
                 testCases.add(testCase);

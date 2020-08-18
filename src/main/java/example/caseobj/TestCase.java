@@ -1,7 +1,6 @@
 package example.caseobj;
 
 import java.util.List;
-import java.util.Optional;
 
 public class TestCase {
 
@@ -33,34 +32,27 @@ public class TestCase {
         }
 
         private final Keyword keyword;
-        private final String firstParam;
-        private final String secondParam;
+        private final List<String> params;
 
-        public TestAction(Keyword keyword, String firstParam, String secondParam) {
+        public TestAction(Keyword keyword, List<String> params) {
             this.keyword = keyword;
-            this.firstParam = firstParam;
-            this.secondParam = secondParam;
+            this.params = params;
         }
 
         public Keyword getKeyword() {
             return keyword;
         }
 
-        public Optional<String> getFirstParam() {
-            return Optional.ofNullable(firstParam);
-        }
-
-        public Optional<String> getSecondParam() {
-            return Optional.ofNullable(secondParam);
+        public List<String> getParams() {
+            return params;
         }
 
         @Override
         public String toString() {
             return "TestAction{" +
-                    "keyword=" + keyword +
-                    ", firstParam='" + firstParam + '\'' +
-                    ", secondParam='" + secondParam + '\'' +
-                    '}';
+                "keyword=" + keyword +
+                ", params=" + params +
+                '}';
         }
     }
 
