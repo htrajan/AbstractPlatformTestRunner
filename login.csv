@@ -1,0 +1,8 @@
+Log In
+CLICK,getStarted,null
+CLICK,signInWithEmail,null
+CLICK,username,null
+SET_TEXT,null,castlight_user@castlighthealth.com
+CLICK,password,null
+SET_TEXT,null,ShowTheLight685
+CLICK,loginButton,null
