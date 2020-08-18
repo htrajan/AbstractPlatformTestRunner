@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import static example.caseobj.TestCase.TestAction.Keyword.VERIFY_EITHER;
+
 public class IosPlatform implements Platform {
 
     private static final Map<String, String> NAME_TO_XPATH = new HashMap<>();
@@ -122,6 +124,16 @@ public class IosPlatform implements Platform {
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
                 } catch (Exception exception) {
                     objectName = action.getParams().get(1);
+                    new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
+                }
+                break;
+            case VERIFY_TRIPLE:
+                TestAction verifyEither = new TestAction(VERIFY_EITHER, action.getParams());
+                waitDurationInMillis = (Integer) driver.getCapabilities().getCapability("maxDuration");
+                try {
+                    executeTestAction(verifyEither);
+                } catch (Exception exception) {
+                    objectName = action.getParams().get(2);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
                 }
                 break;

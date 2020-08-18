@@ -28,7 +28,8 @@ public class TestCase {
             CHECK_ELEMENT,
             WAIT_FOR,
             SCROLL_TO,
-            VERIFY_EITHER
+            VERIFY_EITHER,
+            VERIFY_TRIPLE
         }
 
         private final Keyword keyword;
