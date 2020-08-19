@@ -55,7 +55,7 @@ public class TestRunner {
     }
 
     public static void main(String[] args) {
-        TestRunner runner = new TestRunner(new XlsDataSource("login.csv"));
+        TestRunner runner = new TestRunner(new XlsDataSource(args[0]));
         runner.runTests();
     }
 }

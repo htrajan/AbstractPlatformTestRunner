@@ -14,8 +14,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
+import static example.caseobj.TestCase.TestAction.Keyword.CLICK;
 import static example.caseobj.TestCase.TestAction.Keyword.VERIFY_EITHER;
 
 public class IosPlatform implements Platform {
@@ -33,6 +35,7 @@ public class IosPlatform implements Platform {
     }
 
     private IOSDriver<IOSElement> driver;
+    private Optional<IOSElement> foundElement = Optional.empty();
 
     public IosPlatform(DeviceType deviceType) throws IOException {
         String url;
@@ -107,8 +110,17 @@ public class IosPlatform implements Platform {
                 driver.getKeyboard().sendKeys(action.getParams().get(0));
                 break;
             case CLICK:
-                WebElement e = getElementByName(action.getParams().get(0));
+                String name = action.getParams().get(0);
+                WebElement e = name.equals("foundElement") ? foundElement.orElseThrow(IllegalArgumentException::new) : getElementByName(name);
                 e.click();
+                break;
+            case CLICK_SEQUENTIALLY:
+                try {
+                    executeTestAction(new TestAction(CLICK, action.getParams()));
+                } catch (Exception ignored) { }
+                try {
+                    executeTestAction(new TestAction(CLICK, action.getParams().subList(1, action.getParams().size())));
+                } catch (Exception ignored) { }
                 break;
             case CHECK_ELEMENT:
             case SCROLL_TO:
@@ -122,19 +134,22 @@ public class IosPlatform implements Platform {
                 try {
                     objectName = action.getParams().get(0);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
+                    foundElement = Optional.of(getElementByName(objectName));
                 } catch (Exception exception) {
                     objectName = action.getParams().get(1);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
+                    foundElement = Optional.of(getElementByName(objectName));
                 }
                 break;
             case VERIFY_TRIPLE:
                 TestAction verifyEither = new TestAction(VERIFY_EITHER, action.getParams());
-                waitDurationInMillis = (Integer) driver.getCapabilities().getCapability("maxDuration");
+                waitDurationInMillis = Integer.parseInt(driver.getCapabilities().getCapability("maxDuration").toString());
                 try {
                     executeTestAction(verifyEither);
                 } catch (Exception exception) {
                     objectName = action.getParams().get(2);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
+                    foundElement = Optional.of(getElementByName(objectName));
                 }
                 break;
             default:

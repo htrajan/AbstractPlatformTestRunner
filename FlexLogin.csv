@@ -1,0 +1,7 @@
+Flexible Log In
+CLICK_SEQUENTIALLY,getStarted,signInWithEmail
+CLICK,username
+SET_TEXT,castlight_user@castlighthealth.com
+CLICK,password
+SET_TEXT,ShowTheLight685
+CLICK,loginButton

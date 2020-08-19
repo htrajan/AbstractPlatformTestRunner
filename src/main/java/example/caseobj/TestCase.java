@@ -25,6 +25,7 @@ public class TestCase {
             GOTO,
             SET_TEXT,
             CLICK,
+            CLICK_SEQUENTIALLY,
             CHECK_ELEMENT,
             WAIT_FOR,
             SCROLL_TO,
