@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebElementEntity>
+   <description></description>
+   <name>input_Wage Works Commuter Benefits_searchbar-input sc-ion-searchbar-md</name>
+   <tag></tag>
+   <elementGuidId>396948c0-0a3b-4d37-826c-03c00af98042</elementGuidId>
+   <selectorCollection>
+      <entry>
+         <key>XPATH</key>
+         <value>//input[@type='search']</value>
+      </entry>
+   </selectorCollection>
+   <selectorMethod>XPATH</selectorMethod>
+   <useRalativeImagePath>false</useRalativeImagePath>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>tag</name>
+      <type>Main</type>
+      <value>input</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>aria-label</name>
+      <type>Main</type>
+      <value>search text</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>class</name>
+      <type>Main</type>
+      <value>searchbar-input sc-ion-searchbar-md</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>inputmode</name>
+      <type>Main</type>
+      <value>search</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>placeholder</name>
+      <type>Main</type>
+      <value>Condition, procedure or specialty</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>type</name>
+      <type>Main</type>
+      <value>search</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>autocomplete</name>
+      <type>Main</type>
+      <value>off</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>autocorrect</name>
+      <type>Main</type>
+      <value>off</value>
+   </webElementProperties>
+   <webElementProperties>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath</name>
+      <type>Main</type>
+      <value>/html[@class=&quot;plt-android plt-mobile plt-mobileweb md hydrated&quot;]/body[1]/app-root[1]/ion-app[@class=&quot;md ion-page hydrated&quot;]/ion-router-outlet[@class=&quot;hydrated&quot;]/app-tabs[@class=&quot;ion-page&quot;]/ion-tabs[1]/div[@class=&quot;tabs-inner&quot;]/ion-router-outlet[@class=&quot;hydrated&quot;]/app-find-care[@class=&quot;ion-page&quot;]/ion-header[@class=&quot;find-care__header md header-md header-collapse-none hydrated&quot;]/ion-toolbar[@class=&quot;search-bar-padding in-toolbar md hydrated toolbar-searchbar&quot;]/clh-search-bar[@class=&quot;search-bar&quot;]/div[@class=&quot;search-bar__patient-input-section&quot;]/form[@class=&quot;keyword-form search-bar__input-form ng-untouched ng-pristine ng-valid&quot;]/ion-searchbar[@class=&quot;search-bar__patient-input-key ng-untouched ng-pristine ng-valid sc-ion-searchbar-md-h sc-ion-searchbar-md-s md searchbar-left-aligned hydrated ion-untouched ion-pristine ion-valid&quot;]/div[@class=&quot;searchbar-input-container sc-ion-searchbar-md&quot;]/input[@class=&quot;searchbar-input sc-ion-searchbar-md&quot;]</value>
+   </webElementProperties>
+   <webElementXpaths>
+      <isSelected>true</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:attributes</name>
+      <type>Main</type>
+      <value>//input[@type='search']</value>
+   </webElementXpaths>
+   <webElementXpaths>
+      <isSelected>false</isSelected>
+      <matchCondition>equals</matchCondition>
+      <name>xpath:position</name>
+      <type>Main</type>
+      <value>//input</value>
+   </webElementXpaths>
+</WebElementEntity>
