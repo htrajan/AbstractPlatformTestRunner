@@ -4,6 +4,7 @@ import example.datasource.TestCaseDataSource;
 import example.datasource.XlsDataSource;
 import example.platform.IosPlatform;
 import example.platform.Platform;
+import example.platform.WebPlatform;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -17,7 +18,7 @@ public class TestRunner {
 
     static {
         try {
-            platforms = Collections.singletonList(new IosPlatform(SIMULATOR));
+            platforms = Collections.singletonList(/*new IosPlatform(SIMULATOR)*/ new WebPlatform());
         } catch (IOException e) {
             e.printStackTrace();
             platforms = Collections.emptyList();
@@ -55,7 +56,7 @@ public class TestRunner {
     }
 
     public static void main(String[] args) {
-        TestRunner runner = new TestRunner(new XlsDataSource("login.csv"));
+        TestRunner runner = new TestRunner(new XlsDataSource("loginWeb.csv"));
         runner.runTests();
     }
 }
