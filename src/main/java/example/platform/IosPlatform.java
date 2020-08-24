@@ -160,7 +160,7 @@ public class IosPlatform implements Platform {
 
     @Override
     public void cleanUp() throws InterruptedException {
-        Thread.sleep(15_000L);
+        Thread.sleep(5_000L);
         driver.quit();
     }
 

@@ -1,7 +1,9 @@
 package example.runner;
 
+import com.google.common.collect.ImmutableList;
 import example.datasource.TestCaseDataSource;
 import example.datasource.XlsDataSource;
+import example.platform.IosPlatform;
 import example.platform.Platform;
 import example.platform.MDotWebPlatform;
 import example.platform.WebPlatform;
@@ -10,14 +12,18 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import static example.platform.Platform.DeviceType.SIMULATOR;
+
 public class TestRunner {
 
     private static List<Platform> platforms;
 
     static {
         try {
-            platforms = Collections.singletonList(/*new IosPlatform(SIMULATOR)*/ new MDotWebPlatform());
-        } catch (IOException e) {
+            platforms = Collections.singletonList(new IosPlatform(SIMULATOR));
+            //platforms = Collections.singletonList(new MDotWebPlatform());
+            //platforms = ImmutableList.of(new MDotWebPlatform(), new WebPlatform());
+        } catch (Exception e) {
             e.printStackTrace();
             platforms = Collections.emptyList();
         }
