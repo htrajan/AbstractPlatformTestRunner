@@ -4,30 +4,39 @@ import example.caseobj.TestCase;
 import example.repository.RepositoryReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
+import java.util.Properties;
 
 import static example.caseobj.TestCase.TestAction.Keyword.VERIFY_EITHER;
+import static org.openqa.selenium.remote.CapabilityType.PLATFORM_NAME;
 
-public class WebPlatform implements Platform {
+public class MDotWebPlatform implements Platform {
 
     private static final Map<String, By> objectLocator = RepositoryReader.readObjectRepository();
 
     private final RemoteWebDriver driver;
     private WebElement currentElement = null;
 
-    public WebPlatform() throws MalformedURLException {
+    public MDotWebPlatform() throws IOException {
+        Properties properties = new Properties();
+        properties.load(getClass().getClassLoader().getResourceAsStream("iOS-base.properties"));
+        properties.load(getClass().getClassLoader().getResourceAsStream("iOS-mdot-simulator.properties"));
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("browserName", "Chrome");
+        capabilities.setCapability("browserName", BrowserType.SAFARI);
+        //capabilities.setCapability(PLATFORM_NAME, "iOS");
         //capabilities.setCapability("", "/Applications/Google Chrome.app/Contents/MacOS/");
-        capabilities.setCapability("chromedriverExecutableDir", "/usr/local/bin");
-        this.driver = new RemoteWebDriver(new URL("https://m.us.castlighthealth.com"), capabilities);
+        //capabilities.setCapability("chromedriverExecutableDir", "/usr/local/bin");
+        properties.stringPropertyNames().forEach(name -> capabilities.setCapability(name, properties.get(name)));
+        this.driver = new RemoteWebDriver(new URL("http://0.0.0.0:4723/wd/hub"), capabilities);
+        //this.driver = new RemoteWebDriver(new URL("https://m.us.castlighthealth.com"), capabilities);
     }
 
     @Override
