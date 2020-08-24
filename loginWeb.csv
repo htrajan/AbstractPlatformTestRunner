@@ -1,4 +1,4 @@
 Log In
 GOTO,https://m.us.castlighthealth.com
-#WAIT_FOR,Mobile/ion-button_Sign in with email
+WAIT_FOR,Mobile/ion-button_Sign in with email
 CLICK,Mobile/ion-button_Sign in with email
