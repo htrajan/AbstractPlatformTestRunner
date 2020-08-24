@@ -4,6 +4,7 @@ import example.datasource.TestCaseDataSource;
 import example.datasource.XlsDataSource;
 import example.platform.Platform;
 import example.platform.MDotWebPlatform;
+import example.platform.WebPlatform;
 
 import java.io.IOException;
 import java.util.Collections;
