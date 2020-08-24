@@ -2,14 +2,12 @@ package example.runner;
 
 import example.datasource.TestCaseDataSource;
 import example.datasource.XlsDataSource;
-import example.platform.IosPlatform;
 import example.platform.Platform;
+import example.platform.MDotWebPlatform;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-
-import static example.platform.Platform.DeviceType.SIMULATOR;
 
 public class TestRunner {
 
@@ -17,7 +15,7 @@ public class TestRunner {
 
     static {
         try {
-            platforms = Collections.singletonList(new IosPlatform(SIMULATOR));
+            platforms = Collections.singletonList(/*new IosPlatform(SIMULATOR)*/ new MDotWebPlatform());
         } catch (IOException e) {
             e.printStackTrace();
             platforms = Collections.emptyList();
