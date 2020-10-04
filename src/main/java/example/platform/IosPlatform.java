@@ -35,7 +35,7 @@ public class IosPlatform implements Platform {
     }
 
     private IOSDriver<IOSElement> driver;
-    private Optional<IOSElement> foundElement = Optional.empty();
+    private IOSElement foundElement;
 
     public IosPlatform(DeviceType deviceType) throws IOException {
         String url;
@@ -61,38 +61,15 @@ public class IosPlatform implements Platform {
 
     private DesiredCapabilities getCapabilities(DeviceType deviceType) throws IOException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-//        capabilities.setCapability("maxDuration", 5000);
-//        capabilities.setCapability("automationName", "XCUITest");
-//        capabilities.setCapability("newCommandTimeout", 180);
-//        capabilities.setCapability("useNewWDA", true);
-//        capabilities.setCapability("platformName", "iOS");
-//        capabilities.setCapability("deviceOrientation", "portrait");
-//        capabilities.setCapability("webkitResponseTimeout", 500);
-//        capabilities.setCapability("wdaEventloopIdleDelay",3);
-//        capabilities.setCapability("autoWebView", true);
-//        capabilities.setCapability("startIWDP", true);
-//        capabilities.setCapability("autoAcceptAlerts", true);
-//        capabilities.setCapability("idleTimeout", 1000);
-//
-//        capabilities.setCapability("appiumVersion", "1.18.0");
-//        capabilities.setCapability("browserName", "");
-//        capabilities.setCapability("safariInitialUrl", "");
-//        capabilities.setCapability("name", "login-test");
+
         Properties properties = new Properties();
         properties.load(getClass().getClassLoader().getResourceAsStream("iOS-base.properties"));
 
         switch (deviceType) {
             case SAUCE_LABS:
-//                capabilities.setCapability("app", "sauce-storage:" + "Castlight.zip");
-//                capabilities.setCapability("deviceName", "iPhone 11");
-//                capabilities.setCapability("platformVersion", "13.0");
                 properties.load(getClass().getClassLoader().getResourceAsStream("iOS-sauce-labs.properties"));
                 break;
             case SIMULATOR:
-//                capabilities.setCapability("udid", "B6847845-B77A-4D5F-9054-3451898065AD");
-//                capabilities.setCapability("app", "/Users/riyengar/Documents/Castlight.app");
-//                capabilities.setCapability("deviceName", "iPhone 8 Plus");
-//                capabilities.setCapability("platformVersion", "13.6");
                 properties.load(getClass().getClassLoader().getResourceAsStream("iOS-simulator.properties"));
                 break;
         }
@@ -111,7 +88,7 @@ public class IosPlatform implements Platform {
                 break;
             case CLICK:
                 String name = action.getParams().get(0);
-                WebElement e = name.equals("foundElement") ? foundElement.orElseThrow(IllegalArgumentException::new) : getElementByName(name);
+                WebElement e = name.equals("foundElement") ? getFoundElement().orElseThrow(IllegalArgumentException::new) : getElementByName(name);
                 e.click();
                 break;
             case CLICK_SEQUENTIALLY:
@@ -134,11 +111,11 @@ public class IosPlatform implements Platform {
                 try {
                     objectName = action.getParams().get(0);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
-                    foundElement = Optional.of(getElementByName(objectName));
+                    foundElement = getElementByName(objectName);
                 } catch (Exception exception) {
                     objectName = action.getParams().get(1);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
-                    foundElement = Optional.of(getElementByName(objectName));
+                    foundElement = getElementByName(objectName);
                 }
                 break;
             case VERIFY_TRIPLE:
@@ -149,7 +126,7 @@ public class IosPlatform implements Platform {
                 } catch (Exception exception) {
                     objectName = action.getParams().get(2);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(By.xpath(NAME_TO_XPATH.get(objectName))));
-                    foundElement = Optional.of(getElementByName(objectName));
+                    foundElement = getElementByName(objectName);
                 }
                 break;
             default:
@@ -172,5 +149,9 @@ public class IosPlatform implements Platform {
     @Override
     public IOSElement getElementByName(String name) {
         return driver.findElement(By.xpath(NAME_TO_XPATH.get(name)));
+    }
+
+    public Optional<IOSElement> getFoundElement() {
+        return Optional.ofNullable(foundElement);
     }
 }
