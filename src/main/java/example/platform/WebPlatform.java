@@ -1,6 +1,7 @@
 package example.platform;
 
 import example.caseobj.TestCase;
+import example.repository.Reader;
 import example.repository.RepositoryReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -21,7 +22,8 @@ public class WebPlatform extends AbstractWebPlatform {
 
     private final ChromeDriver driver;
 
-    public WebPlatform() {
+    public WebPlatform(Reader reader) {
+        super(reader);
         this.driver = new ChromeDriver();
     }
 

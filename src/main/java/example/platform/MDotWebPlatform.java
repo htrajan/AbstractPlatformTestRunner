@@ -1,5 +1,6 @@
 package example.platform;
 
+import example.repository.Reader;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -12,10 +13,11 @@ public class MDotWebPlatform extends AbstractWebPlatform {
 
     private final RemoteWebDriver driver;
 
-    public MDotWebPlatform() throws IOException {
+    public MDotWebPlatform(Reader reader) throws IOException {
+        super(reader);
         Properties properties = new Properties();
-        properties.load(getClass().getClassLoader().getResourceAsStream("iOS-base.properties"));
-        properties.load(getClass().getClassLoader().getResourceAsStream("iOS-mdot-simulator.properties"));
+        properties.load(getClass().getClassLoader().getResourceAsStream("Platform Properties/iOS-base.properties"));
+        properties.load(getClass().getClassLoader().getResourceAsStream("Platform Properties/iOS-mdot-simulator.properties"));
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("browserName", BrowserType.SAFARI);
         properties.stringPropertyNames().forEach(name -> capabilities.setCapability(name, properties.get(name)));

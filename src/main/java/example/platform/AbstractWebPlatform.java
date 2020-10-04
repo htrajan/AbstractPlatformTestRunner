@@ -1,6 +1,7 @@
 package example.platform;
 
 import example.caseobj.TestCase;
+import example.repository.Reader;
 import example.repository.RepositoryReader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,10 +15,14 @@ import static example.caseobj.TestCase.TestAction.Keyword.VERIFY_EITHER;
 
 public abstract class AbstractWebPlatform implements Platform {
 
-    private static final Map<String, By> objectLocator = RepositoryReader.readObjectRepository();
+    private Map<String, By> objectLocator;
 
     abstract RemoteWebDriver getDriver();
     private WebElement currentElement = null;
+
+    public AbstractWebPlatform(Reader reader) {
+        objectLocator = reader.getObjects();
+    }
 
     @Override
     public WebElement getElementByName(String name) {

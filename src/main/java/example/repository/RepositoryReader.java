@@ -13,15 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public class RepositoryReader {
+public class RepositoryReader implements Reader {
 
-  enum SelectorType {
-    BASIC,
-    CSS,
-    XPATH
-  }
-
-  public static Map<String, By> readObjectRepository() {
+  public Map<String, By> getObjects() {
     Map<String, By> toReturn = new HashMap<>();
     try {
       DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -58,7 +52,7 @@ public class RepositoryReader {
               continue;
             }
             if (key != null && value != null) {
-              SelectorType selectorType = SelectorType.valueOf(key);
+              Reader.SelectorType selectorType = Reader.SelectorType.valueOf(key);
               Optional<By> maybeBy = Optional.empty();
               switch (selectorType) {
                 case BASIC:
@@ -83,10 +77,6 @@ public class RepositoryReader {
       e.printStackTrace();
       return toReturn;
     }
-  }
-
-  public static void main(String[] args) {
-    System.out.println(readObjectRepository());
   }
 
 }
