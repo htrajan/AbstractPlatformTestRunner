@@ -1,4 +1,4 @@
-package example.repository;
+package io.example.repository;
 
 import org.openqa.selenium.By;
 import org.w3c.dom.Document;

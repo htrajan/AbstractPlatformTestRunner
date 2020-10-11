@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>example</groupId>
-    <artifactId>AbstractPlatformTestRunner</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>io.example</groupId>
+    <artifactId>abstract-platform-test-runner</artifactId>
+    <version>1.0</version>
     <build>
         <plugins>
             <plugin>
@@ -16,6 +16,7 @@
                     <source>8</source>
                     <target>8</target>
                 </configuration>
+                <version>3.5.1</version>
             </plugin>
 
             <plugin>
@@ -31,7 +32,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        example.runner.TestRunner
+                                        io.example.runner.TestRunner
                                     </mainClass>
                                 </manifest>
                             </archive>

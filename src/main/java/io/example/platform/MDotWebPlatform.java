@@ -1,6 +1,6 @@
-package example.platform;
+package io.example.platform;
 
-import example.repository.Reader;
+import io.example.repository.Reader;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;

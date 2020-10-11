@@ -1,8 +1,7 @@
-package example.platform;
+package io.example.platform;
 
-import example.caseobj.TestCase;
-import example.repository.Reader;
-import example.repository.RepositoryReader;
+import io.example.caseobj.TestCase;
+import io.example.repository.Reader;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -10,8 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Map;
-
-import static example.caseobj.TestCase.TestAction.Keyword.VERIFY_EITHER;
 
 public abstract class AbstractWebPlatform implements Platform {
 
@@ -61,7 +58,7 @@ public abstract class AbstractWebPlatform implements Platform {
                 }
                 break;
             case VERIFY_TRIPLE:
-                TestCase.TestAction verifyEither = new TestCase.TestAction(VERIFY_EITHER, action.getParams());
+                TestCase.TestAction verifyEither = new TestCase.TestAction(TestCase.TestAction.Keyword.VERIFY_EITHER, action.getParams());
                 waitDurationInMillis = (Integer) getDriver().getCapabilities().getCapability("maxDuration");
                 try {
                     executeTestAction(verifyEither);
