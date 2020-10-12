@@ -17,7 +17,7 @@ public class TestRunner {
 
     private final TestCaseDataSource dataSource;
 
-    private TestRunner(TestCaseDataSource dataSource, List<Platform> platforms) {
+    public TestRunner(TestCaseDataSource dataSource, List<Platform> platforms) {
         this.dataSource = dataSource;
         this.platforms = platforms;
     }
