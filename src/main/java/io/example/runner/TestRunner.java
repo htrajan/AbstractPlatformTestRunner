@@ -11,7 +11,14 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
+/**
+ * Copyright 1/1/2021 KT Rajan
+ * All rights reserved
+ */
+
 public class TestRunner {
+
+    private static final String COPYRIGHT = "Copyright 1/1/2021 KT Rajan. All rights reserved";
 
     private final List<Platform> platforms;
 
