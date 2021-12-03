@@ -4,7 +4,9 @@ import io.example.datasource.TestCaseDataSource;
 import io.example.datasource.XlsDataSource;
 import io.example.platform.IosPlatform;
 import io.example.platform.Platform;
+import io.example.platform.WebPlatform;
 import io.example.repository.PropertyReader;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.List;
 
@@ -56,10 +58,10 @@ public class TestRunner {
     public static void main(String[] args) {
         List<Platform> platforms;
         try {
-            platforms = singletonList(new IosPlatform(
-                Platform.DeviceType.SIMULATOR, new PropertyReader(singletonList("login"))));
+//            platforms = singletonList(new IosPlatform(
+//                Platform.DeviceType.SIMULATOR, new PropertyReader(singletonList("login"))));
             //platforms = singletonList(new MDotWebPlatform());
-            //platforms = ImmutableList.of(new MDotWebPlatform(), new WebPlatform());
+            platforms = List.of(new WebPlatform());
         } catch (Exception e) {
             e.printStackTrace();
             platforms = emptyList();

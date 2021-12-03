@@ -1,42 +1,42 @@
 package io.example.platform;
 
 import io.example.caseobj.TestCase;
-import io.example.repository.Reader;
+import io.example.xpath.HtmlXPathParser;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class AbstractWebPlatform implements Platform {
 
-    private Map<String, By> objectLocator;
-
     abstract RemoteWebDriver getDriver();
     private WebElement currentElement = null;
-
-    public AbstractWebPlatform(Reader reader) {
-        objectLocator = reader.getObjects();
-    }
+    private String currentUrl = null;
+    private final Map<String, Map<String, By>> urlToXpathLookup = new HashMap<>();
 
     @Override
     public WebElement getElementByName(String name) {
-        return getDriver().findElement(objectLocator.get(name));
+        return getDriver().findElement(getBy(name));
     }
 
     @Override
     public boolean executeTestAction(TestCase.TestAction action) {
+        String firstValue = action.getParams().get(0);
         switch (action.getKeyword()) {
             case GOTO:
-                getDriver().get(action.getParams().get(0));
+                currentUrl = firstValue;
+                urlToXpathLookup.put(firstValue, HtmlXPathParser.getNameToXPathMap(firstValue));
+                getDriver().get(firstValue);
                 break;
             case SET_TEXT:
-                currentElement.sendKeys(action.getParams().get(0));
+                currentElement.sendKeys(firstValue);
                 break;
             case CLICK:
-                WebElement e = getElementByName(action.getParams().get(0));
+                WebElement e = getElementByName(firstValue);
                 e.click();
                 currentElement = e;
                 break;
@@ -44,17 +44,22 @@ public abstract class AbstractWebPlatform implements Platform {
             case SCROLL_TO:
                 break;
             case WAIT_FOR:
-                String objectName = action.getParams().get(0);
-                new WebDriverWait(getDriver(), 30).until(ExpectedConditions.presenceOfElementLocated(objectLocator.get(objectName)));
+                String objectName = firstValue;
+                String currentDriverUrl = getDriver().getCurrentUrl();
+                if (!currentDriverUrl.equals(currentUrl)) {
+                    this.currentUrl = currentDriverUrl;
+                    urlToXpathLookup.put(this.currentUrl, HtmlXPathParser.getNameToXPathMap(getDriver()));
+                }
+                new WebDriverWait(getDriver(), 30).until(ExpectedConditions.presenceOfElementLocated(getBy(objectName)));
                 break;
             case VERIFY_EITHER:
                 int waitDurationInMillis = (Integer) getDriver().getCapabilities().getCapability("maxDuration");
                 try {
-                    objectName = action.getParams().get(0);
-                    new WebDriverWait(getDriver(), waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(objectLocator.get(objectName)));
+                    objectName = firstValue;
+                    new WebDriverWait(getDriver(), waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(getBy(objectName)));
                 } catch (Exception exception) {
                     objectName = action.getParams().get(1);
-                    new WebDriverWait(getDriver(), waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(objectLocator.get(objectName)));
+                    new WebDriverWait(getDriver(), waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(getBy(objectName)));
                 }
                 break;
             case VERIFY_TRIPLE:
@@ -64,7 +69,7 @@ public abstract class AbstractWebPlatform implements Platform {
                     executeTestAction(verifyEither);
                 } catch (Exception exception) {
                     objectName = action.getParams().get(2);
-                    new WebDriverWait(getDriver(), waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(objectLocator.get(objectName)));
+                    new WebDriverWait(getDriver(), waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(getBy(objectName)));
                 }
                 break;
         }
@@ -75,6 +80,10 @@ public abstract class AbstractWebPlatform implements Platform {
     public void cleanUp() throws InterruptedException {
         Thread.sleep(5_000L);
         getDriver().quit();
+    }
+
+    private By getBy(String name) {
+        return urlToXpathLookup.get(currentUrl).get(name);
     }
 
 }
