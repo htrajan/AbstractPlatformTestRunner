@@ -1,0 +1,9 @@
+Log In
+GOTO,https://us.castlighthealth.com
+WAIT_FOR,email
+CLICK,email
+SET_TEXT,castlight_user@castlighthealth.com
+WAIT_FOR,password
+CLICK,password
+SET_TEXT,ShowTheLight685
+CLICK,submit

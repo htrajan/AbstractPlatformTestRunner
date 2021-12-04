@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,14 +38,18 @@ public class HtmlXPathParser {
         }
     }
 
+    // CL submit button //button[@type='submit']
+
     public static Map<String, By> getNameToXPathMap(RemoteWebDriver driver) {
         List<WebElement> inputs = driver.findElementsByTagName("input");
-        return inputs.stream()
+        Map<String, By> toReturn = new HashMap<>(inputs.stream()
             .filter(webElement -> webElement.isDisplayed() && webElement.isEnabled())
             .collect(toMap(
                 webElement -> !webElement.getAttribute("name").isEmpty() ?
                     webElement.getAttribute("name") : webElement.getAttribute("id"),
-                webElement -> By.xpath(String.format("//input[@id='%s']", webElement.getAttribute("id")))));
+                webElement -> By.xpath(String.format("//input[@id='%s']", webElement.getAttribute("id"))))));
+        toReturn.put("submit", By.xpath("//button[@type='submit']"));
+        return toReturn;
     }
 
     private static String getNameForMap(Element element) {
