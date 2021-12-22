@@ -3,6 +3,7 @@ package io.example.platform;
 import io.example.caseobj.TestCase;
 import io.example.xpath.HtmlXPathParser;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -25,7 +26,7 @@ public abstract class AbstractWebPlatform implements Platform {
 
     @Override
     public boolean executeTestAction(TestCase.TestAction action) {
-        String firstValue = action.getParams().get(0);
+        String firstValue = action.getParams().size() > 0 ? action.getParams().get(0) : "";
         switch (action.getKeyword()) {
             case GOTO:
                 currentUrl = firstValue;
@@ -35,11 +36,15 @@ public abstract class AbstractWebPlatform implements Platform {
             case SET_TEXT:
                 currentElement.sendKeys(firstValue);
                 break;
+            case HIT_ENTER_KEY:
+                currentElement.sendKeys(Keys.ENTER);
+                break;
             case CLICK:
                 WebElement e = getElementByName(firstValue);
                 e.click();
                 currentElement = e;
                 break;
+            case CLICK_SEQUENTIALLY:
             case CHECK_ELEMENT:
             case SCROLL_TO:
                 break;
@@ -50,7 +55,21 @@ public abstract class AbstractWebPlatform implements Platform {
                     this.currentUrl = currentDriverUrl;
                     urlToXpathLookup.put(this.currentUrl, HtmlXPathParser.getNameToXPathMap(getDriver()));
                 }
-                new WebDriverWait(getDriver(), 30).until(ExpectedConditions.presenceOfElementLocated(getBy(objectName)));
+                try {
+                    new WebDriverWait(getDriver(), 30).until(ExpectedConditions.presenceOfElementLocated(getBy(objectName)));
+                } catch (Exception ex) {
+                    try {
+                        Thread.sleep(5_000);
+                    } catch (InterruptedException exc) {
+                        exc.printStackTrace();
+                    }
+                    currentDriverUrl = getDriver().getCurrentUrl();
+                    if (!currentDriverUrl.equals(currentUrl)) {
+                        this.currentUrl = currentDriverUrl;
+                        urlToXpathLookup.put(this.currentUrl, HtmlXPathParser.getNameToXPathMap(getDriver()));
+                    }
+                    new WebDriverWait(getDriver(), 30).until(ExpectedConditions.presenceOfElementLocated(getBy(objectName)));
+                }
                 break;
             case VERIFY_EITHER:
                 int waitDurationInMillis = (Integer) getDriver().getCapabilities().getCapability("maxDuration");

@@ -24,6 +24,7 @@ public class TestCase {
         public enum Keyword {
             GOTO,
             SET_TEXT,
+            HIT_ENTER_KEY,
             CLICK,
             CLICK_SEQUENTIALLY,
             CHECK_ELEMENT,

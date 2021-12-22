@@ -47,7 +47,7 @@ public class HtmlXPathParser {
             .collect(toMap(
                 webElement -> !webElement.getAttribute("name").isEmpty() ?
                     webElement.getAttribute("name") : webElement.getAttribute("id"),
-                webElement -> By.xpath(String.format("//input[@id='%s']", webElement.getAttribute("id"))))));
+                webElement -> By.id(webElement.getAttribute("id")))));
         toReturn.put("submit", By.xpath("//button[@type='submit']"));
         return toReturn;
     }

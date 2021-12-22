@@ -2,23 +2,19 @@ package io.example.runner;
 
 import io.example.datasource.TestCaseDataSource;
 import io.example.datasource.XlsDataSource;
-import io.example.platform.IosPlatform;
 import io.example.platform.Platform;
 import io.example.platform.WebPlatform;
-import io.example.repository.PropertyReader;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 
 /**
  * Copyright 1/1/2021 KT Rajan
  * All rights reserved
  */
 
-public class TestRunner {
+public class TR {
 
     private static final String COPYRIGHT = "Copyright 1/1/2021 KT Rajan. All rights reserved";
 
@@ -26,7 +22,7 @@ public class TestRunner {
 
     private final TestCaseDataSource dataSource;
 
-    public TestRunner(TestCaseDataSource dataSource, List<Platform> platforms) {
+    public TR(TestCaseDataSource dataSource, List<Platform> platforms) {
         this.dataSource = dataSource;
         this.platforms = platforms;
     }
@@ -66,7 +62,7 @@ public class TestRunner {
             e.printStackTrace();
             platforms = emptyList();
         }
-        TestRunner runner = new TestRunner(new XlsDataSource(args[0]), platforms);
+        TR runner = new TR(new XlsDataSource(args[0]), platforms);
         runner.runTests();
     }
 }

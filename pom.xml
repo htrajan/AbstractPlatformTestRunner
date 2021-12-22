@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.example</groupId>
-    <artifactId>abstract-platform-test-runner</artifactId>
+    <artifactId>tr</artifactId>
     <version>1.0</version>
     <build>
         <plugins>
@@ -20,28 +20,68 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>assembly</id>
                         <goals>
                             <goal>single</goal>
                         </goals>
+                        <phase>package</phase>
                         <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>
-                                        io.example.runner.TestRunner
-                                    </mainClass>
-                                </manifest>
-                            </archive>
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.5.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <obfuscate>true</obfuscate>
+                    <injar>${project.build.finalName}-jar-with-dependencies.jar</injar>
+                    <outjar>${project.build.finalName}-obf.jar</outjar>
+                    <options>
+                        <option>-allowaccessmodification</option>
+                        <option>-dontoptimize</option>
+                        <option>-dontshrink</option>
+                        <option>-dontnote</option>
+                        <option>-dontwarn</option> <!-- added option to ignore com.sun missing classes -->
+                        <option>-keepattributes Signature</option>
+                        <option>-keep public class io.example.runner.TR { public static void main(java.lang.String[]); }</option>
+                        <option>
+                            -keepclassmembers,allowoptimization enum * {
+                            public static **[] values();
+                            public static ** valueOf(java.lang.String);
+                            }
+                        </option>
+                    </options>
+                    <libs>
+                        <lib>${java.home}/jmods/java.base.jmod</lib>
+                        <lib>${java.home}/jmods/java.datatransfer.jmod</lib>
+                        <lib>${java.home}/jmods/java.prefs.jmod</lib>
+                        <lib>${java.home}/jmods/java.xml.jmod</lib>
+                        <lib>${java.home}/jmods/java.desktop.jmod</lib>
+                    </libs>
+                    <archive>
+                        <manifest>
+                            <mainClass>TR</mainClass>
+                            <packageName>io.example.runner</packageName>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
