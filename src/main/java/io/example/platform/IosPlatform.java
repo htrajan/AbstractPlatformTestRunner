@@ -1,6 +1,7 @@
 package io.example.platform;
 
 import io.example.caseobj.TestCase.TestAction;
+import io.example.componentfinder.XlsAliasComponentFinder;
 import io.example.repository.Reader;
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.ios.IOSElement;
@@ -69,7 +70,7 @@ public class IosPlatform implements Platform {
     }
 
     @Override
-    public boolean executeTestAction(TestAction action) {
+    public boolean executeTestAction(TestAction action, Optional<XlsAliasComponentFinder> componentFinder) {
         switch (action.getKeyword()) {
             case GOTO:
                 driver.get(action.getParams().get(0));
@@ -79,15 +80,15 @@ public class IosPlatform implements Platform {
                 break;
             case CLICK:
                 String name = action.getParams().get(0);
-                WebElement e = name.equals("foundElement") ? getFoundElement().orElseThrow(IllegalArgumentException::new) : getElementByName(name);
+                WebElement e = name.equals("foundElement") ? getFoundElement().orElseThrow(IllegalArgumentException::new) : getElementByName(name, componentFinder);
                 e.click();
                 break;
             case CLICK_SEQUENTIALLY:
                 try {
-                    executeTestAction(new TestAction(CLICK, action.getParams()));
+                    executeTestAction(new TestAction(CLICK, action.getParams()), componentFinder);
                 } catch (Exception ignored) { }
                 try {
-                    executeTestAction(new TestAction(CLICK, action.getParams().subList(1, action.getParams().size())));
+                    executeTestAction(new TestAction(CLICK, action.getParams().subList(1, action.getParams().size())), componentFinder);
                 } catch (Exception ignored) { }
                 break;
             case CHECK_ELEMENT:
@@ -102,22 +103,22 @@ public class IosPlatform implements Platform {
                 try {
                     objectName = action.getParams().get(0);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(objectLocator.get(objectName)));
-                    foundElement = getElementByName(objectName);
+                    foundElement = getElementByName(objectName, componentFinder);
                 } catch (Exception exception) {
                     objectName = action.getParams().get(1);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(objectLocator.get(objectName)));
-                    foundElement = getElementByName(objectName);
+                    foundElement = getElementByName(objectName, componentFinder);
                 }
                 break;
             case VERIFY_TRIPLE:
                 TestAction verifyEither = new TestAction(VERIFY_EITHER, action.getParams());
                 waitDurationInMillis = Integer.parseInt(driver.getCapabilities().getCapability("maxDuration").toString());
                 try {
-                    executeTestAction(verifyEither);
+                    executeTestAction(verifyEither, componentFinder);
                 } catch (Exception exception) {
                     objectName = action.getParams().get(2);
                     new WebDriverWait(driver, waitDurationInMillis / 1000).until(ExpectedConditions.presenceOfElementLocated(objectLocator.get(objectName)));
-                    foundElement = getElementByName(objectName);
+                    foundElement = getElementByName(objectName, componentFinder);
                 }
                 break;
             default:
@@ -138,7 +139,7 @@ public class IosPlatform implements Platform {
     }
 
     @Override
-    public IOSElement getElementByName(String name) {
+    public IOSElement getElementByName(String name, Optional<XlsAliasComponentFinder> componentFinder) {
         return driver.findElement(objectLocator.get(name));
     }
 

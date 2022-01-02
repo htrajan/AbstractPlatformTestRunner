@@ -13,17 +13,17 @@ import java.util.List;
 
 public class XlsDataSource implements TestCaseDataSource {
 
-    private final String fileName;
+    private final String filename;
 
-    public XlsDataSource(String fileName) {
-        this.fileName = fileName;
+    public XlsDataSource(String filename) {
+        this.filename = filename;
     }
 
     @Override
     public List<TestCase> getTestCases() {
         // map csv file to test cases
         List<TestCase> testCases = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line = reader.readLine();
             while (line != null) {
                 if (!line.startsWith("#")) {
@@ -39,6 +39,8 @@ public class XlsDataSource implements TestCaseDataSource {
                         line = reader.readLine();
                     }
                     testCases.add(testCase);
+                } else {
+                    line = reader.readLine();
                 }
             }
         } catch (IOException e) {

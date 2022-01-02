@@ -1,4 +1,4 @@
-package io.example.xpath;
+package io.example.componentfinder;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,7 +15,7 @@ import java.util.Map;
 import static java.util.function.Predicate.not;
 import static java.util.stream.Collectors.toMap;
 
-public class HtmlXPathParser {
+public class HtmlComponentFinder {
 
 // To generalize beyond 'input' tags:
 
@@ -27,12 +27,12 @@ public class HtmlXPathParser {
 
 // public static Map<Type, Map<String, By>> getNameToXPathMap(String url)
 
-    public static Map<String, By> getNameToXPathMap(String url) {
+    public static Map<String, By> getNameToComponentIdentifierMap(String url) {
         try {
             Document doc = Jsoup.connect(url).get();
             return doc.selectXpath("//input").stream()
-                .filter(not(HtmlXPathParser::isElementHidden))
-                .collect(toMap(HtmlXPathParser::getNameForMap, HtmlXPathParser::getXPathForMap));
+                .filter(not(HtmlComponentFinder::isElementHidden))
+                .collect(toMap(HtmlComponentFinder::getNameForMap, HtmlComponentFinder::getXPathForMap));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -40,7 +40,7 @@ public class HtmlXPathParser {
 
     // CL submit button //button[@type='submit']
 
-    public static Map<String, By> getNameToXPathMap(RemoteWebDriver driver) {
+    public static Map<String, By> getNameToComponentIdentifierMap(RemoteWebDriver driver) {
         List<WebElement> inputs = driver.findElementsByTagName("input");
         Map<String, By> toReturn = new HashMap<>(inputs.stream()
             .filter(webElement -> webElement.isDisplayed() && webElement.isEnabled())

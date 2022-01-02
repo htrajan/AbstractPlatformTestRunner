@@ -1,0 +1,14 @@
+Log In
+GOTO,https://denpreprod.castlighthealth.com
+WAIT_FOR,email_input
+CLICK,email_input
+SET_TEXT,castlight_user@castlighthealth.com
+WAIT_FOR,password_input
+CLICK,password_input
+SET_TEXT,ShowTheLight685
+CLICK,login_button
+WAIT_FOR,query_input
+CLICK,query_input
+SET_TEXT,94043
+HIT_ENTER_KEY,
+CHECK_ELEMENT,sorry_message
