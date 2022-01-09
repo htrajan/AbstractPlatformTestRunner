@@ -3,3 +3,4 @@ password_input,id,password
 login_button,class,login-form__form-submit
 query_input,name,q
 sorry_message,text,Sorry\, we can't find results for
+Password,text,Password
